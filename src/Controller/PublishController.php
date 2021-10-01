@@ -6,9 +6,13 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
+use Symfony\Component\Routing\Annotation\Route;
 
 class PublishController implements ControllerInterface
 {
+    /**
+     * @Route("/publish", name="publish")
+     */
     public function publish(HubInterface $hub): Response
     {
         $update = new Update(
