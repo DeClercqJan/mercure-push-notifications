@@ -2,9 +2,29 @@
 
 <script>
     console.log('test123')
-    const eventSource = new EventSource('/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'));
+    // werkt niet Unknown: "mercure" function.
+    {#const eventSource = new EventSource("{{ mercure([#}
+    {#    'https://example.com/books/1',#}
+    {#    'https://example.com/books/2',#}
+    {#    'https://example.com/reviews/{id}'#}
+    {#])|escape('js') }}");#}
+    const eventSource = new EventSource([
+            '/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'),
+    ]);
+    const eventSource2 = new EventSource([
+        '/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/2'),
+    ]);
     eventSource.onmessage = event => {
         // Will be called every time an update is published by the server
         console.log(JSON.parse(event.data));
     };
+    eventSource2.onmessage = event => {
+        // Will be called every time an update is published by the server
+        console.log(JSON.parse(event.data));
+    };
+
+
+    eventSource.onmessage = event => {
+        console.log(JSON.parse(event.data));
+    }
 </script>

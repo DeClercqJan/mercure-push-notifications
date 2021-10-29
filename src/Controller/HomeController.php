@@ -10,8 +10,11 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 class HomeController implements ControllerInterface
 {
-    public function __construct(private \Twig\Environment $twig)
+    private $twig;
+
+    public function __construct(\Twig\Environment $twig)
     {
+        $this->twig = $twig;
     }
 
     /**

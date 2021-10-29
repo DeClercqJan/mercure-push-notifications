@@ -16,7 +16,6 @@ class PublishController implements ControllerInterface
     public function publish(HubInterface $hub): Response
     {
         $update = new Update(
-            // todo: deze wijzigingen
             'http://example.com/books/1',
             json_encode(['status' => 'OutOfStock'])
         );
@@ -24,5 +23,20 @@ class PublishController implements ControllerInterface
         $hub->publish($update);
 
         return new Response('published!');
+    }
+
+    /**
+     * @Route("/publish2", name="publish2")
+     */
+    public function publish2(HubInterface $hub): Response
+    {
+        $update = new Update(
+            'http://example.com/books/2',
+            json_encode(['status' => 'OutOfStock2'])
+        );
+
+        $hub->publish($update);
+
+        return new Response('published2!');
     }
 }
