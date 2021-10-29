@@ -8,23 +8,39 @@
     {#    'https://example.com/books/2',#}
     {#    'https://example.com/reviews/{id}'#}
     {#])|escape('js') }}");#}
+
     const eventSource = new EventSource([
             '/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'),
     ]);
-    const eventSource2 = new EventSource([
-        '/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/2'),
-    ]);
-    eventSource.onmessage = event => {
-        // Will be called every time an update is published by the server
-        console.log(JSON.parse(event.data));
-    };
-    eventSource2.onmessage = event => {
-        // Will be called every time an update is published by the server
-        console.log(JSON.parse(event.data));
-    };
+    // const eventSource2 = new EventSource([
+    //     '/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/2'),
+    // ]);
+    // eventSource.onmessage = event => {
+    //     // Will be called every time an update is published by the server
+    //     console.log(JSON.parse(event.data));
+    // };
+    // eventSource2.onmessage = event => {
+    //     // Will be called every time an update is published by the server
+    //     console.log(JSON.parse(event.data));
+    // };
+    //
+    // eventSource.onmessage = event => {
+    //     console.log(JSON.parse(event.data));
+    // }
 
+    fetch('/discover') // Has Link: <http://localhost:3000/.well-known/mercure>; rel="mercure"
+        .then(response => {
+            // Extract the hub URL from the Link header
+            const hubUrl = response.headers.get('Link').match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1];
+            console.log(hubUrl)
 
-    eventSource.onmessage = event => {
-        console.log(JSON.parse(event.data));
-    }
+            // Append the topic(s) to subscribe as query parameter
+            const hub = new URL(hubUrl, window.origin);
+            hub.searchParams.append('topic', 'http://example.com/books/{id}');
+
+            // Subscribe to updates
+            const eventSource = new EventSource(hub);
+            console.log(eventSource)
+            eventSource.onmessage = event => console.log(event.data);
+        });
 </script>
