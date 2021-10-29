@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
@@ -37,7 +38,8 @@ class PublishController implements ControllerInterface
 
         $hub->publish($update);
 
-        return new Response('published2!');
+//        return new Response('published2!');
+        return new JsonResponse('published2!');
     }
 
     /**
@@ -55,7 +57,8 @@ class PublishController implements ControllerInterface
         // Subscriber's JWT must contain this topic, a URI template it matches or * in mercure.subscribe to receive the update
         $hub->publish($update);
 
-        return new Response('private update published!');
+//        return new Response('private update published!');
+        return new JsonResponse('private update published!');
     }
 
 }

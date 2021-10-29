@@ -1,7 +1,18 @@
-<p>twig file rendered</p>
-
+<p>twig file rendered</p><br>
+<a id="publish2-button">update to all published 2</a><br>
+<a id="private-button">update to me only</a><br>
 <script>
     console.log('test123')
+    document.getElementById('publish2-button').addEventListener('click', function (event) {
+        event.preventDefault()
+        fetch('/publish2')
+            .then(response => console.log(response))
+    })
+    document.getElementById('private-button').addEventListener('click', function (event) {
+        event.preventDefault()
+        fetch('/private')
+            .then(response => console.log(response))
+    })
     // werkt niet Unknown: "mercure" function.
     {#const eventSource = new EventSource("{{ mercure([#}
     {#    'https://example.com/books/1',#}
