@@ -10,7 +10,7 @@
     {#])|escape('js') }}");#}
 
     const eventSource = new EventSource([
-            '/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'),
+            '/.well-known/mercure?topic=' + encodeURIComponent('https://example.com/books/1'),
     ]);
     // const eventSource2 = new EventSource([
     //     '/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/2'),
@@ -36,10 +36,15 @@
 
             // Append the topic(s) to subscribe as query parameter
             const hub = new URL(hubUrl, window.origin);
-            hub.searchParams.append('topic', 'http://example.com/books/{id}');
+            hub.searchParams.append('topic', 'https://example.com/books/{id}');
 
             // Subscribe to updates
-            const eventSource = new EventSource(hub);
+            // const eventSource = new EventSource(hub);
+
+            const eventSource = new EventSource(hub, {
+                withCredentials: true
+            });
+
             console.log(eventSource)
             eventSource.onmessage = event => console.log(event.data);
         });

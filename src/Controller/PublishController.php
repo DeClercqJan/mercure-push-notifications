@@ -10,20 +10,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PublishController implements ControllerInterface
 {
-    /**
-     * @Route("/publish", name="publish")
-     */
-    public function publish(HubInterface $hub): Response
-    {
-        $update = new Update(
-            'http://example.com/books/1',
-            json_encode(['status' => 'OutOfStock'])
-        );
-
-        $hub->publish($update);
-
-        return new Response('published!');
-    }
+//    /**
+//     * @Route("/publish", name="publish")
+//     */
+//    public function publish(HubInterface $hub): Response
+//    {
+//        $update = new Update(
+//            'http://example.com/books/1',
+//            json_encode(['status' => 'OutOfStock'])
+//        );
+//
+//        $hub->publish($update);
+//
+//        return new Response('published!');
+//    }
 
     /**
      * @Route("/publish2", name="publish2")
@@ -31,7 +31,7 @@ class PublishController implements ControllerInterface
     public function publish2(HubInterface $hub): Response
     {
         $update = new Update(
-            'http://example.com/books/2',
+            'https://example.com/books/2',
             json_encode(['status' => 'OutOfStock2'])
         );
 
@@ -39,4 +39,23 @@ class PublishController implements ControllerInterface
 
         return new Response('published2!');
     }
+
+    /**
+     * @Route("/private", name="private")
+     */
+    public function private(HubInterface $hub): Response
+    {
+        $update = new Update(
+            'https://example.com/books/1',
+            json_encode(['status' => 'OutOfStock1private']),
+            true
+        );
+
+        // Publisher's JWT must contain this topic, a URI template it matches or * in mercure.publish or you'll get a 401
+        // Subscriber's JWT must contain this topic, a URI template it matches or * in mercure.subscribe to receive the update
+        $hub->publish($update);
+
+        return new Response('private update published!');
+    }
+
 }
