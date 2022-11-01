@@ -43,12 +43,28 @@ class PublishController implements ControllerInterface
     }
 
     /**
+     * @Route("/publish3", name="publish3")
+     */
+    public function publish(HubInterface $hub): Response
+    {
+        $update = new Update(
+            'https://example.com/books/3',
+            json_encode(['status' => 'OutOfStock3'])
+        );
+
+        $hub->publish($update);
+
+        return new Response('published!');
+    }
+
+
+    /**
      * @Route("/private", name="private")
      */
     public function private(HubInterface $hub): Response
     {
         $update = new Update(
-            'https://example.com/books/1',
+            'https://example.com/books/3',
             json_encode(['status' => 'OutOfStock1private']),
             true
         );
@@ -57,6 +73,7 @@ class PublishController implements ControllerInterface
         // Subscriber's JWT must contain this topic, a URI template it matches or * in mercure.subscribe to receive the update
         $hub->publish($update);
 
+        // todo:  $authorization->setCookie($request, ['https://example.com/books/1']);
 //        return new Response('private update published!');
         return new JsonResponse('private update published!');
     }
