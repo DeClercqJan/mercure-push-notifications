@@ -73,7 +73,6 @@ class PublishController implements ControllerInterface
         // Subscriber's JWT must contain this topic, a URI template it matches or * in mercure.subscribe to receive the update
         $hub->publish($update);
 
-        // todo:  $authorization->setCookie($request, ['https://example.com/books/1']);
 //        return new Response('private update published!');
         return new JsonResponse('private update published!');
     }

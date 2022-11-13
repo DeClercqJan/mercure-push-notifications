@@ -9,6 +9,8 @@ services:
       SERVER_NAME: ':3000'
       MERCURE_PUBLISHER_JWT_KEY: '!ChangeMe!'
       MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeMe!'
+      MERCURE_EXTRA_DIRECTIVES:
+        cors_origins http://127.0.0.1:8001
     # Development mode:
     command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
     ports:

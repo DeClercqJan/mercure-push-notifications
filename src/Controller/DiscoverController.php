@@ -48,7 +48,23 @@ class DiscoverController implements ControllerInterface
         $discovery->addLink($request);
 
         return new JsonResponse([
-            '@id' => '/books/3',
+            'id' => '/books/3',
+            'availability' => 'https://schema.org/InStock',
+        ]);
+    }
+
+    /**
+     * @Route("/subscribe", name="subscribe")
+     */
+    public function subscribeAction(Request $request, Discovery $discovery, Authorization $authorization): JsonResponse
+    {
+        // todo: this doesn't work
+        // Link: <https://hub.example.com/.well-known/mercure>; rel="mercure"
+        $discovery->addLink($request);
+        $authorization->setCookie($request, ['https://example.com/books/3']);
+
+        return new JsonResponse([
+            'id' => '/books/3',
             'availability' => 'https://schema.org/InStock',
         ]);
     }
